@@ -1,26 +1,47 @@
 <div id="game-container">
 <div class="start-screen">
     <section class="neon-panel" aria-labelledby="start-title">
+        <div class="panel-scan-line" aria-hidden="true"></div>
         <div class="panel-content">
-            <h1 id="start-title" class="brand">Soc Ops</h1>
-            <p class="subtitle">Social Bingo</p>
+
+            <div class="brand-wrap">
+                <h1 id="start-title" class="brand brand--glitch" data-text="Soc Ops">Soc Ops</h1>
+                <p class="subtitle">Social Bingo</p>
+            </div>
+
             <div class="neon-rule" aria-hidden="true"></div>
+
+            <div class="stat-row" aria-label="Game stats">
+                <div class="stat-badge">
+                    <span class="stat-value">25</span>
+                    <span class="stat-label">Squares</span>
+                </div>
+                <div class="stat-badge stat-badge--magenta">
+                    <span class="stat-value">5</span>
+                    <span class="stat-label">In a Row</span>
+                </div>
+                <div class="stat-badge stat-badge--lime">
+                    <span class="stat-value">∞</span>
+                    <span class="stat-label">Players</span>
+                </div>
+            </div>
 
             <div class="how-card">
                 <h2 class="how-title">How to play</h2>
-                <ul class="how-list">
-                    <li>Find people who match the questions</li>
-                    <li>Tap a square when you find a match</li>
-                    <li>Get 5 in a row to win!</li>
-                </ul>
+                <ol class="how-list how-list--steps">
+                    <li><span class="step-num">01</span> Mingle — find people who match the squares</li>
+                    <li><span class="step-num">02</span> Tap a square when you find a match</li>
+                    <li><span class="step-num">03</span> Get 5 in a row to call BINGO!</li>
+                </ol>
             </div>
 
             <button
                 hx-post="/start"
                 hx-target="#game-container"
                 hx-swap="outerHTML"
-                class="neon-btn">
-                Start Game
+                class="neon-btn neon-btn--launch">
+                <span class="btn-label">Start Game</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
             </button>
         </div>
     </section>
