@@ -58,6 +58,7 @@ async def toggle_square(request: Request, square_id: int) -> Response:
 async def reset_game(request: Request) -> Response:
     session = _get_game_session(request)
     session.reset_game()
+    session.reset_hunt()
     return templates.TemplateResponse(
         request,
         "components/start_screen.html",
@@ -71,6 +72,46 @@ async def dismiss_modal(request: Request) -> Response:
     session.dismiss_modal()
     return templates.TemplateResponse(
         request, "components/game_screen.html", {"session": session}
+    )
+
+
+@app.post("/select-mode", response_class=HTMLResponse)
+async def select_mode(request: Request, mode: str = "bingo") -> Response:
+    session = _get_game_session(request)
+    session.select_mode(mode)
+    if mode == "hunt":
+        return templates.TemplateResponse(
+            request, "components/hunt_start_screen.html", {"session": session}
+        )
+    return templates.TemplateResponse(
+        request, "components/start_screen.html", {"session": session}
+    )
+
+
+@app.post("/start-hunt", response_class=HTMLResponse)
+async def start_hunt(request: Request) -> Response:
+    session = _get_game_session(request)
+    session.start_hunt()
+    return templates.TemplateResponse(
+        request, "components/hunt_screen.html", {"session": session}
+    )
+
+
+@app.post("/check/{item_id}", response_class=HTMLResponse)
+async def check_hunt_item(request: Request, item_id: int) -> Response:
+    session = _get_game_session(request)
+    session.handle_hunt_item_click(item_id)
+    return templates.TemplateResponse(
+        request, "components/hunt_screen.html", {"session": session}
+    )
+
+
+@app.post("/dismiss-hunt-modal", response_class=HTMLResponse)
+async def dismiss_hunt_modal(request: Request) -> Response:
+    session = _get_game_session(request)
+    session.dismiss_hunt_modal()
+    return templates.TemplateResponse(
+        request, "components/hunt_screen.html", {"session": session}
     )
 
 

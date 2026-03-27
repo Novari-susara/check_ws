@@ -597,13 +597,30 @@ button:disabled {
     margin: 0 auto;
 }
 
-.neon-square {
-    position: relative;
+/* Shared interactive item base styles (bingo squares, hunt items) */
+.interactive-item {
     border-radius: 11px;
-    min-height: 60px;
     border: 1px solid rgba(157, 183, 213, 0.32);
     background: rgba(7, 14, 36, 0.9);
     color: #d8e9ff;
+    transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.interactive-item:hover {
+    transform: translateY(-1px);
+    border-color: rgba(89, 231, 255, 0.58);
+    box-shadow: 0 8px 16px rgba(89, 231, 255, 0.17);
+}
+
+.interactive-item--marked {
+    background: linear-gradient(160deg, rgba(155, 255, 48, 0.17), rgba(89, 231, 255, 0.16));
+    border-color: rgba(155, 255, 48, 0.62);
+    color: #efffd0;
+}
+
+.neon-square {
+    position: relative;
+    min-height: 60px;
     padding: 0.34rem;
     font-size: 0.74rem;
     line-height: 1.16;
@@ -612,19 +629,6 @@ button:disabled {
     align-items: center;
     justify-content: center;
     box-shadow: inset 0 0 0 1px rgba(89, 231, 255, 0.05);
-    transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
-}
-
-.neon-square:hover {
-    transform: translateY(-1px);
-    border-color: rgba(89, 231, 255, 0.58);
-    box-shadow: 0 8px 16px rgba(89, 231, 255, 0.17);
-}
-
-.neon-square--marked {
-    background: linear-gradient(160deg, rgba(155, 255, 48, 0.17), rgba(89, 231, 255, 0.16));
-    border-color: rgba(155, 255, 48, 0.62);
-    color: #efffd0;
 }
 
 .neon-square--winning {
@@ -667,9 +671,20 @@ button:disabled {
     border: 1px solid rgba(255, 62, 159, 0.6);
     background: rgba(8, 13, 34, 0.96);
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.42), 0 0 35px rgba(255, 62, 159, 0.25);
-    text-align: center;
-    padding: 1.2rem 1rem 1rem;
     animation: modal-rise 220ms ease-out;
+}
+
+.modal-content {
+    text-align: center;
+    padding: 1.5rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.modal-emoji {
+    font-size: 2.8rem;
 }
 
 .modal-icon {
@@ -678,7 +693,7 @@ button:disabled {
 }
 
 .modal-title {
-    margin: 0 0 0.35rem;
+    margin: 0;
     font-family: "Orbitron", "Rajdhani", sans-serif;
     color: var(--neon-magenta);
     letter-spacing: 0.09em;
@@ -686,8 +701,14 @@ button:disabled {
 }
 
 .modal-copy {
-    margin: 0 0 0.9rem;
+    margin: 0;
     color: #d6e8ff;
+}
+
+.modal-message {
+    margin: 0;
+    color: #d6e8ff;
+    font-size: 1rem;
 }
 
 @keyframes modal-rise {
@@ -699,6 +720,100 @@ button:disabled {
         transform: translateY(0) scale(1);
         opacity: 1;
     }
+}
+
+/* Hunt/Scavenger Hunt Styles */
+.hunt-wrap {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.hunt-checklist {
+    width: min(94vw, 600px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.hunt-item {
+    border-radius: 11px;
+    overflow: hidden;
+    transition: border-color 120ms ease, background 120ms ease;
+}
+
+.hunt-item--checked {
+    background: linear-gradient(160deg, rgba(155, 255, 48, 0.17), rgba(89, 231, 255, 0.16));
+    border-color: rgba(155, 255, 48, 0.62);
+}
+
+.hunt-item-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    color: #d8e9ff;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.hunt-item-btn:hover {
+    transform: translateX(2px);
+}
+
+.hunt-item--checked .hunt-item-btn {
+    color: #efffd0;
+}
+
+.hunt-checkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1.5px solid rgba(89, 231, 255, 0.5);
+    border-radius: 6px;
+    background: rgba(89, 231, 255, 0.1);
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    color: var(--neon-lime);
+    transition: all 120ms ease;
+}
+
+.hunt-item--checked .hunt-checkbox {
+    background: rgba(155, 255, 48, 0.25);
+    border-color: rgba(155, 255, 48, 0.7);
+}
+
+.hunt-item-text {
+    flex: 1 1 auto;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.hunt-item--checked .hunt-item-text {
+    text-decoration: line-through;
+    opacity: 0.8;
+}
+
+.hunt-progress-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4rem;
+    font-family: "Orbitron", monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    background: rgba(89, 231, 255, 0.1);
+    border: 1px solid rgba(89, 231, 255, 0.4);
+    border-radius: 10px;
+    padding: 0.35rem 0.6rem;
 }
 
 button:focus-visible {
@@ -759,6 +874,24 @@ button:focus-visible {
         min-height: 52px;
         font-size: 0.67rem;
         padding: 0.25rem;
+    }
+
+    .hunt-checklist {
+        width: min(96vw, 100%);
+    }
+
+    .hunt-item-btn {
+        padding: 0.6rem 0.8rem;
+        gap: 0.6rem;
+    }
+
+    .hunt-item-text {
+        font-size: 0.9rem;
+    }
+
+    .hunt-checkbox {
+        width: 1.1rem;
+        height: 1.1rem;
     }
 }
 

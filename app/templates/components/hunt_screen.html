@@ -1,0 +1,23 @@
+<div id="game-container">
+<div class="game-shell">
+    <header class="game-header">
+        <button
+            hx-post="/reset"
+            hx-target="#game-container"
+            hx-swap="outerHTML"
+            class="back-btn">
+            ← Back
+        </button>
+        <h1 class="game-title">Scavenger Hunt</h1>
+        <div class="hunt-progress-counter">{{ session.hunt_progress_count }}/24</div>
+    </header>
+
+    <div class="hunt-wrap">
+        {% include "components/hunt_checklist.html" %}
+    </div>
+</div>
+
+{% if session.show_hunt_complete_modal %}
+    {% include "components/hunt_complete_modal.html" %}
+{% endif %}
+</div>

@@ -132,3 +132,148 @@ class TestGetWinningSquareIds:
     def test_returns_square_ids(self) -> None:
         line = BingoLine(type="row", index=0, squares=[0, 1, 2, 3, 4])
         assert get_winning_square_ids(line) == {0, 1, 2, 3, 4}
+
+
+class TestGenerateHunt:
+    def test_hunt_has_24_items(self) -> None:
+        from app.game_logic import generate_hunt
+
+        hunt = generate_hunt()
+        assert len(hunt) == 24
+
+    def test_all_hunt_items_are_questions(self) -> None:
+        from app.game_logic import generate_hunt
+
+        hunt = generate_hunt()
+        texts = {item.text for item in hunt}
+        assert texts.issubset(set(QUESTIONS))
+
+    def test_hunt_items_have_sequential_ids(self) -> None:
+        from app.game_logic import generate_hunt
+
+        hunt = generate_hunt()
+        for i, item in enumerate(hunt):
+            assert item.id == i
+
+    def test_hunt_items_not_checked_initially(self) -> None:
+        from app.game_logic import generate_hunt
+
+        hunt = generate_hunt()
+        for item in hunt:
+            assert item.is_checked is False
+
+    def test_hunt_is_shuffled(self) -> None:
+        from app.game_logic import generate_hunt
+
+        hunt1 = generate_hunt()
+        hunt2 = generate_hunt()
+        texts1 = [item.text for item in hunt1]
+        texts2 = [item.text for item in hunt2]
+        # Extremely unlikely to be identical
+        assert texts1 != texts2
+
+
+class TestToggleHuntItem:
+    def test_toggle_checks_unchecked_item(self) -> None:
+        from app.game_logic import generate_hunt, toggle_hunt_item
+
+        hunt = generate_hunt()
+        item_id = 0
+        assert hunt[item_id].is_checked is False
+        new_hunt = toggle_hunt_item(hunt, item_id)
+        assert new_hunt[item_id].is_checked is True
+
+    def test_toggle_unchecks_checked_item(self) -> None:
+        from app.game_logic import generate_hunt, toggle_hunt_item
+
+        hunt = generate_hunt()
+        hunt = toggle_hunt_item(hunt, 0)
+        assert hunt[0].is_checked is True
+        hunt = toggle_hunt_item(hunt, 0)
+        assert hunt[0].is_checked is False
+
+    def test_toggle_returns_new_list(self) -> None:
+        from app.game_logic import generate_hunt, toggle_hunt_item
+
+        hunt = generate_hunt()
+        new_hunt = toggle_hunt_item(hunt, 0)
+        assert hunt is not new_hunt
+
+    def test_toggle_other_items_unchanged(self) -> None:
+        from app.game_logic import generate_hunt, toggle_hunt_item
+
+        hunt = generate_hunt()
+        hunt = toggle_hunt_item(hunt, 0)
+        hunt = toggle_hunt_item(hunt, 0)
+        # Toggle item 0 twice, then toggle item 1
+        new_hunt = toggle_hunt_item(hunt, 1)
+        assert new_hunt[0].is_checked is False
+        assert new_hunt[1].is_checked is True
+
+
+class TestCheckHuntComplete:
+    def test_hunt_not_complete_initially(self) -> None:
+        from app.game_logic import check_hunt_complete, generate_hunt
+
+        hunt = generate_hunt()
+        assert check_hunt_complete(hunt) is False
+
+    def test_hunt_not_complete_with_some_items_checked(self) -> None:
+        from app.game_logic import (
+            check_hunt_complete,
+            generate_hunt,
+            toggle_hunt_item,
+        )
+
+        hunt = generate_hunt()
+        hunt = toggle_hunt_item(hunt, 0)
+        hunt = toggle_hunt_item(hunt, 5)
+        hunt = toggle_hunt_item(hunt, 10)
+        assert check_hunt_complete(hunt) is False
+
+    def test_hunt_complete_when_all_items_checked(self) -> None:
+        from app.game_logic import (
+            check_hunt_complete,
+            generate_hunt,
+            toggle_hunt_item,
+        )
+
+        hunt = generate_hunt()
+        for i in range(len(hunt)):
+            hunt = toggle_hunt_item(hunt, i)
+        assert check_hunt_complete(hunt) is True
+
+
+class TestCountHuntChecked:
+    def test_count_zero_initially(self) -> None:
+        from app.game_logic import count_hunt_checked, generate_hunt
+
+        hunt = generate_hunt()
+        assert count_hunt_checked(hunt) == 0
+
+    def test_count_increases_with_toggles(self) -> None:
+        from app.game_logic import (
+            count_hunt_checked,
+            generate_hunt,
+            toggle_hunt_item,
+        )
+
+        hunt = generate_hunt()
+        hunt = toggle_hunt_item(hunt, 0)
+        assert count_hunt_checked(hunt) == 1
+        hunt = toggle_hunt_item(hunt, 1)
+        assert count_hunt_checked(hunt) == 2
+        hunt = toggle_hunt_item(hunt, 0)
+        assert count_hunt_checked(hunt) == 1
+
+    def test_count_all_checked(self) -> None:
+        from app.game_logic import (
+            count_hunt_checked,
+            generate_hunt,
+            toggle_hunt_item,
+        )
+
+        hunt = generate_hunt()
+        for i in range(len(hunt)):
+            hunt = toggle_hunt_item(hunt, i)
+        assert count_hunt_checked(hunt) == 24

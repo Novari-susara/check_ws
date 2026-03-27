@@ -1,0 +1,15 @@
+<div class="hunt-checklist">
+    {% for item in session.hunt_items %}
+    <div class="hunt-item {% if item.is_checked %}hunt-item--checked{% endif %}">
+        <button
+            hx-post="/check/{{ item.id }}"
+            hx-target="#game-container"
+            hx-swap="outerHTML"
+            class="hunt-item-btn"
+            aria-pressed="{{ 'true' if item.is_checked else 'false' }}">
+            <span class="hunt-checkbox" aria-hidden="true">{% if item.is_checked %}✓{% endif %}</span>
+            <span class="hunt-item-text">{{ item.text }}</span>
+        </button>
+    </div>
+    {% endfor %}
+</div>

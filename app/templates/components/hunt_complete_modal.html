@@ -1,0 +1,16 @@
+<div class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="neon-modal">
+        <div class="modal-content">
+            <div class="modal-emoji">🏆</div>
+            <h2 class="modal-title">Hunt Complete!</h2>
+            <p class="modal-message">You found them all!</p>
+            <button
+                hx-post="/dismiss-hunt-modal"
+                hx-target="#game-container"
+                hx-swap="outerHTML"
+                class="neon-btn">
+                Keep Hunting
+            </button>
+        </div>
+    </div>
+</div>

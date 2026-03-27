@@ -1,0 +1,49 @@
+<div id="game-container">
+<div class="start-screen">
+    <section class="neon-panel" aria-labelledby="hunt-title">
+        <div class="panel-scan-line" aria-hidden="true"></div>
+        <div class="panel-content">
+
+            <div class="brand-wrap">
+                <h1 id="hunt-title" class="brand brand--glitch" data-text="Soc Ops">Soc Ops</h1>
+                <p class="subtitle">Scavenger Hunt</p>
+            </div>
+
+            <div class="neon-rule" aria-hidden="true"></div>
+
+            <div class="stat-row" aria-label="Game stats">
+                <div class="stat-badge">
+                    <span class="stat-value">24</span>
+                    <span class="stat-label">Items</span>
+                </div>
+                <div class="stat-badge stat-badge--magenta">
+                    <span class="stat-value">All</span>
+                    <span class="stat-label">or Nothing</span>
+                </div>
+                <div class="stat-badge stat-badge--lime">
+                    <span class="stat-value">∞</span>
+                    <span class="stat-label">Players</span>
+                </div>
+            </div>
+
+            <div class="how-card">
+                <h2 class="how-title">How to hunt</h2>
+                <ol class="how-list how-list--steps">
+                    <li><span class="step-num">01</span> Mingle — find people who match each item</li>
+                    <li><span class="step-num">02</span> Check the item when you find a match</li>
+                    <li><span class="step-num">03</span> Find all 24 to complete the hunt!</li>
+                </ol>
+            </div>
+
+            <button
+                hx-post="/start-hunt"
+                hx-target="#game-container"
+                hx-swap="outerHTML"
+                class="neon-btn neon-btn--launch">
+                <span class="btn-label">Start Hunt</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+        </div>
+    </section>
+</div>
+</div>
