@@ -36,6 +36,17 @@ tests/
 - State is server-side only; sessions via signed cookie (`itsdangerous`)
 - HTMX routes must return `HTMLResponse`/template fragments — never JSON
 
+## Design Guide
+
+- Preserve the established **Cyberpunk Neon** direction in [app/static/css/app.css](app/static/css/app.css)
+- Prefer existing theme tokens and component classes over adding one-off inline styles
+- Keep visual contrast high and readable: bright accents on dark surfaces, clear text hierarchy
+- Favor Orbitron for display headings and Rajdhani for body/interface text
+- Use motion intentionally: short transitions, one strong focal animation, avoid excessive effects
+- Keep mobile and desktop parity: verify 5x5 board readability and tap targets on small screens
+- Maintain accessibility: visible keyboard focus, sufficient contrast, and reduced-motion support
+- Keep interaction contracts intact in templates: preserve HTMX attributes and [#game-container](app/templates/components/game_screen.html#L1)
+
 ## Checklist
 
 - [ ] `uv run ruff check .` — lint passes

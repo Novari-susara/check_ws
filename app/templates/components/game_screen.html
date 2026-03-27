@@ -1,32 +1,28 @@
 <div id="game-container">
-<div class="flex flex-col min-h-full bg-gray-50">
-    <!-- Header -->
-    <header class="flex items-center justify-between p-3 bg-white border-b border-gray-200">
+<div class="game-shell">
+    <header class="game-header">
         <button
             hx-post="/reset"
             hx-target="#game-container"
             hx-swap="outerHTML"
-            class="text-gray-500 text-sm px-3 py-1.5 rounded active:bg-gray-100">
+            class="back-btn">
             ← Back
         </button>
-        <h1 class="font-bold text-gray-900">Soc Ops</h1>
-        <div class="w-16"></div>
+        <h1 class="game-title">Soc Ops</h1>
+        <div class="header-spacer" aria-hidden="true"></div>
     </header>
 
-    <!-- Instructions -->
-    <p class="text-center text-gray-500 text-sm py-2 px-4">
+    <p class="game-tip">
         Tap a square when you find someone who matches it.
     </p>
 
-    <!-- Bingo indicator -->
     {% if session.has_bingo %}
-    <div class="bg-amber-100 text-amber-800 text-center py-2 font-semibold text-sm">
+    <div class="bingo-banner">
         🎉 BINGO! You got a line!
     </div>
     {% endif %}
 
-    <!-- Board -->
-    <div class="flex-1 flex items-center justify-center p-3">
+    <div class="board-wrap">
         {% include "components/bingo_board.html" %}
     </div>
 </div>
